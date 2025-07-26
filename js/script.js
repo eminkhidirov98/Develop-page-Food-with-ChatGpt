@@ -1,4 +1,6 @@
 window.addEventListener('DOMContentLoaded', function () {
+  // Tabs
+
   const tabs = document.querySelectorAll('.tabheader__item');
   const tabsContent = document.querySelectorAll('.tabcontent');
   const tabsParent = document.querySelector('.tabheader__items');
@@ -33,4 +35,52 @@ window.addEventListener('DOMContentLoaded', function () {
       });
     }
   });
+
+  // Timer
+
+  const deadline = '2025-12-31';
+
+  function endtime(deadline) {
+    const t = Date.parse(deadline);
+    const now = Date.parse(new Date());
+    const diff = t - now;
+    return diff;
+  }
+
+  function getTimeRemaining(endtime) {
+    let t = Date.parse(endtime) - Date.parse(new Date());
+    let days = Math.floor(t / (1000 * 60 * 60 * 24));
+    let hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+    let minutes = Math.floor((t / (1000 * 60)) % 60);
+    let seconds = Math.floor((t / 1000) % 60);
+    return {
+      total: t,
+      days: days,
+      hours: hours,
+      minutes: minutes,
+      seconds: seconds,
+    };
+  }
+  const daysE1 = document.getElementById('days');
+  const hoursE1 = document.getElementById('hours');
+  const minutesE1 = document.getElementById('minutes');
+  const secondsE1 = document.getElementById('seconds');
+
+  function updateClock() {
+    function addZero(num) {
+      return num < 10 ? '0' + num : num;
+    }
+    const t = getTimeRemaining(deadline);
+
+    daysE1.textContent = addZero(t.days);
+    hoursE1.textContent = addZero(t.hours);
+    minutesE1.textContent = addZero(t.minutes);
+    secondsE1.textContent = addZero(t.seconds);
+
+    if (t.total <= 0) {
+      clearInterval(timeInterval);
+    }
+  }
+  const timeInterval = setInterval(updateClock, 1000);
+  updateClock();
 });
